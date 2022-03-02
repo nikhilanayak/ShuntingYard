@@ -73,54 +73,69 @@ int pemdas(char c){
 	return 0;
 }
 
+
+
 Queue* postfix(char* input){
-	Queue* q = new Queue();
-	Stack* s = new Stack();
+	Queue* queue = new Queue();
+	Stack* stack = new Stack();
 
-
-	int size = strlen(input);
-	for(int i = 0; i < size; i++){
+	int len = strlen(input);
+	for(int i = 0; i < len; i++){
 		char token = input[i];
 		if(isdigit(token)){
-			q->enqueue(token);
+			queue->enqueue(token);
 		}
-		else if(token == '^' || token == '*' || token == '+' || token == '-' || token == '/'){
-			while(!s->empty() && s->peek() != '(' && pemdas(s->peek()) > pemdas(token) && token != '^'){
-				q->enqueue(s->peek());
-				s->pop();
-			}
-			s->push(token);
-		}
-		else if(token == '('){
-			s->push(token);
-		}
-		else if(token == ')'){
-			while(true){
-				if(s->peek() == '('){
-					s->pop();
+		else if(token == '+' || token == '-' || token == '/' || token == '*' || token == '^'){
+			char o1 = token;
+			/*while(true){
+				if(stack->empty()){
 					break;
 				}
-				else{
-					q->enqueue(s->peek());
-					s->pop();
+				char o2 = stack->peek();
+				if(o2 == '+' || o2 == '-' || o2 == '/' || o2 == '*' || o2 == '^' || o2 == ')'){
+					if(pemdas(o2) > pemdas(o1)){
+
+					}
+					else if(pemdas(o2) == pemdas(o1) && o1 != '^'){
+
+					}
+					else{
+						break;
+					}
+					queue->enqueue(stack->peek());
+					stack->pop();
 				}
-			}
+				else{
+					break;
+				}
+			}*/
+			stack->push(o1);
 		}
-		else{
-			while(!s->empty()){
-				q->enqueue(s->peek());
-				s->pop();
+		else if(token == '('){
+			stack->push('(');
+		}
+		else if(token == ')'){
+			while(stack->peek() != '('){
+				queue->enqueue(stack->peek());
+				stack->pop();
 			}
+			stack->pop();
 		}
 	}
-	return q;
+	while(!stack->empty()){
+		queue->enqueue(stack->peek());
+		stack->pop();
+	}
+	return queue;
 }
 
 
 int main(){
 	char* input = "3*1+2";
+	std::cout << "parsing " << input << "\n";
 	Queue* q = postfix(input);
 	while(!q->empty()){
 		std::cout << q->dequeue();
 	}
+	std::cout << "\n";
 }
