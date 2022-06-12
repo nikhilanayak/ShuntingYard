@@ -1,3 +1,12 @@
+/*
+ Implementation of the Shunting Yard Algorithm Written By Nikhil Nayak
+ The Shunting Yard algorithm is used for parsing logical expressions like mathematical expressions
+ This program uses Linked Lists and Trees for its implementation
+
+ June 11, 2022
+ */
+
+
 #include <iostream>
 
 typedef struct Node{ // used like a Linked List. Also used for stack/queue
